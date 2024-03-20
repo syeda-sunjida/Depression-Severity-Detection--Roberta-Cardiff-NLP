@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Page</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'DiabetesPrediction/css/style.css' %}">
+</head>
+
+<body>
+<style>
+    body {
+        background-image: url("{% static 'DepressionSeverity/static/DepressionSeverity/images/d1.jpg' %}");
+        background-size: cover;
+        background-attachment: fixed;
+        margin: 0;
+    }
+
+    .main {
+        position: fixed;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 550px;
+        border-radius: 10px;
+        align-items: center;
+        padding: 5%;
+        background-color: rgba(255, 255, 255, 0.8);
+        text-align: center;
+    }
+
+    h1 {
+        color: #0086b3;
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    table {
+        margin-top: 10px;
+    }
+
+    input[type=text] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .submit-button {
+        background-color: #4dc3ff;
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    .clear-button {
+        background-color: #f44336;
+        border: none;
+        color: white;
+        padding: 8px 16px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    .result-container {
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 18px;
+    }
+
+    .result-positive {
+        color: crimson;
+    }
+
+    .result-negative {
+        color: green;
+    }
+</style>
+
+<div class="main">
+    <h1>Please enter any text that has a sentiment</h1>
+    <form action="result" method="get" onsubmit="return validateForm();" id="prediction-form">
+        <table>
+            <tr>
+                <td align="right">Input Text:</td>
+                <td align="left"><input type="text" name="input_text" value="{{ request.GET.input_text }}"></td>
+            </tr>
+        </table>
+        <input type="submit" class="submit-button">
+        <input type="button" value="Clear All" onclick="clearForm()" class="clear-button">
+    </form>
+    <br>
+    <div class="result-container {% if severity == 'Not Depressed' %}result-positive{% else %}result-negative{% endif %}">
+        <p>Severity: {{ severity }}</p>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        var form = document.getElementById("prediction-form");
+        var inputs = form.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type === "text" && inputs[i].value.trim() === "") {
+                alert("Please enter all required values.");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function clearForm() {
+        var inputs = document.getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type === "text") {
+                inputs[i].value = "";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
